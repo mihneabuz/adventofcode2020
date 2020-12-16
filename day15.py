@@ -1,27 +1,24 @@
-line = input()
-numbers = [int(x) for x in line.split(",")]
+import time
+import numpy as np
+from numba import njit
 
-d = {}
-for i in range(len(numbers)):
-    d.update({numbers[i]: (-1, i)})
+input = "2,1,10,11,0,6"
 
-i = len(numbers)
-last = numbers[len(numbers) - 1]
+nums = np.array([int(x) for x in input.split(",")])
 
-# brute force just worked I guess xD
-while(i < 30000000):
-    ap = d[last]
-    if (ap[0] == -1):
-        new = 0
-    else:
-        new = ap[1] - ap[0]
-    if (new not in d):
-        d.update({new: (-1, i)})
-    ap = d[new]
-    d.update({new: (ap[1], i)})
-    if (i + 1 == 2020):
-        print(i+1, new)
-    last = new
-    i += 1
+begin = time.time()
+@njit
+def day15(nums, target):
+    ap = np.full(target, -1)
+    for i, val in enumerate(nums[: -1]):
+        ap[val] = i
+    last = nums[-1]
+    for i in range(len(nums) - 1, target - 1):
+        new = 0 if ap[last] == -1 else i - ap[last]
+        ap[last] = i
+        last = new
+    return last
 
-print(new)
+print(day15(nums, 2020))
+print(day15(nums, 30000000))
+print(time.time() - begin)
