@@ -59,6 +59,8 @@ nrtickets = len(tickets)
 
 while(-1 in matched):
     for i in range(nrf):
+        if (matched[i] != -1):
+            pass
         found = 0
         for j in range(nrf):
             if (l[i][j] == nrtickets and j not in matched):
