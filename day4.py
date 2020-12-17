@@ -2,6 +2,7 @@ import sys
 import numpy as np
 import pandas as pd
 
+#This is not at all eficient. I wanted to see if I remember pandas :)
 df = pd.DataFrame()
 
 dic = {}
