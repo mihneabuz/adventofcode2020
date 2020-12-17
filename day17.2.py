@@ -1,3 +1,4 @@
+from numba import njit
 import sys
 import numpy as np
 
@@ -15,16 +16,17 @@ space[int((limit - n) / 2) : int((limit + n) / 2),
       int((limit - n) / 2) : int((limit + n) / 2),
       int(limit / 2 - 1),
       int(limit / 2 - 1)] = np.array(l)
-
-def valid(limit, x, y, z, t):
+@njit
+def valid(limit, x, y, z, t) -> bool:
   if ((x > limit-1) or (y > limit-1) or (z > limit-1) or (t > limit-1)
       or x < 0 or y < 0 or z < 0 or t < 0):
     return False
   return True
 
-
-def count_nei(space, limit, x, y, z, t):
+@njit
+def count_nei(space, limit, x, y, z, t) -> int:
   nei = 0
+  d = (0, 1, -1)
   for i in d:
     for j in d:
       for k in d:
@@ -35,6 +37,7 @@ def count_nei(space, limit, x, y, z, t):
             nei += space[x + i, y + j, z + k, t + q] == 1
   return nei - space[x, y, z, t]
 
+@njit
 def step(new_space, space, limit):
   for i in range(limit):
     print("   ", i)
@@ -54,9 +57,5 @@ for i in range(6):
   print("\n\nstep: ", i)
   step(new_space, space, limit)
   space = new_space
-
-#print(new_space[:, :, int(limit / 2 - 1)-1, int(limit / 2 - 1)], "\n")
-#print(new_space[:, :, int(limit / 2 - 1), int(limit / 2 - 1)], "\n")
-#print(new_space[:, :, int(limit / 2 - 1)+1, int(limit / 2 - 1)], "\n")
 
 print(sum(sum(sum(sum(space)))))
