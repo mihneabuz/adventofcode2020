@@ -2,6 +2,9 @@ import sys
 import numpy as np
 from scipy.ndimage import convolve
 
+#Tried using the symetry to calculate less buut
+#I only got it to work for 3 dimensions :(
+
 def Kernel(n):
     aux = np.ones(tuple(3 for i in range(n)))
     aux[tuple(1 for i in range(n))] = 0
@@ -18,6 +21,7 @@ def step(dim, start, iter):
         neighbors = convolve(space, ker)
         space = np.where((neighbors == 3) | ((space == 1) & (neighbors==2)), 1, 0)
 
+    print(space[6].sum(), space[7 :].sum())
     return space.sum()
 
 start = []
