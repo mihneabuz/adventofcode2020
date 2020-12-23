@@ -1,4 +1,3 @@
-from numba import njit
 input = "952438716"
 #input = "389125467"
 nocups = 1000000
